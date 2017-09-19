@@ -709,7 +709,7 @@ def main():
 		for hap_index in range(0,2):
 			hap_x = [haplotype_a, haplotype_b][hap_index];
 
-			for var_index in range(0, len(variants))):
+			for var_index in range(0, len(variants)):
 				id = variants[var_index];
 				allele = dict_variant_reads[id]['alleles'][int(hap_x[var_index])];
 				alleles[hap_index].append(allele);
@@ -837,7 +837,7 @@ def main():
 		#$ write ASE stats
 
 		# generate haplotypic counts
-		for bam_i in range(0,len(bam_list):
+		for bam_i in range(0,len(bam_list)):
 			if bam_i not in haplo_count_bam_exclude:
 				bam_name = bam_names[bam_i]
 				set_hap_expr_reads = [[],[]];
@@ -853,7 +853,7 @@ def main():
 				for hap_index in range(0,2):
 					hap_x = [haplotype_a, haplotype_b][hap_index];
 
-					for var_index in range(0, len(variants))):
+					for var_index in range(0, len(variants)):
 						id = variants[var_index];
 						chrom = dict_variant_reads[id]['chr'];
 						pos = int(dict_variant_reads[id]['pos']);
@@ -973,7 +973,7 @@ def main():
 			# check to see if variant is blacklisted
 			if chrom+"_"+str(pos) not in set_haplo_blacklist:
 
-				for bam_i in range(0,len(bam_list):
+				for bam_i in range(0,len(bam_list)):
 					if bam_i not in haplo_count_bam_exclude:
 						bam_name = bam_names[bam_i];
 						if bam_i in dict_var['haplo_reads'][0]:
@@ -1203,7 +1203,7 @@ def generate_variant_dict(fields)):
 	# get only the alleles this individual has
 	ind_alleles = [];
 
-	for i in range(0,len(all_alleles):
+	for i in range(0,len(all_alleles)):
 		if str(i) in genotype):
 			ind_alleles.append(all_alleles[i]);
 
@@ -1501,14 +1501,14 @@ def write_vcf():
 					all_alleles = [vcf_columns[3]] + alt_alleles;
 					ind_alleles = [];
 
-					for i in range(0,len(all_alleles):
+					for i in range(0,len(all_alleles)):
 						if str(i) in genotype):
 							ind_alleles.append(all_alleles[i]);
 
 					# make sure there are as many entries in each sample as there should be before adding new columns
 					# if there are entries missing add blanks
 					n_fields = len(vcf_columns[8].split(":"));
-					for i in range(9, len(vcf_columns):
+					for i in range(9, len(vcf_columns)):
 						sample_fields = len(vcf_columns[i].split(":"));
 						if sample_fields != n_fields:
 							missing_cols = n_fields - sample_fields;
@@ -1674,7 +1674,7 @@ def count_hap_reads(input):
 	reads = [];
 	counted = set([]);
 	# sum up supporting reads between all configs
-	for var_index in range(0,len(block):
+	for var_index in range(0,len(block)):
 		for other_index in range(0, len(block)):
 			if other_index != var_index:
 				if (str(var_index)+":"+str(other_index) not in counted) and (str(other_index)+":"+str(var_index) not in counted)):
@@ -1694,7 +1694,7 @@ def generate_hap_network_all(input):
 
 	out_junctions = [];
 
-	for var_index in range(0,len(block):
+	for var_index in range(0,len(block)):
 		for other_index in range(0, len(block)):
 			if other_index != var_index:
 				for allele_index in range (0,2):
@@ -1719,7 +1719,7 @@ def generate_hap_network(input)):
 	out_junctions = [];
 
 	# sum up supporting reads between all configs
-	for var_index in range(0,len(block):
+	for var_index in range(0,len(block)):
 		for other_index in range(0, len(block)):
 			if other_index != var_index:
 				if (str(var_index)+":"+str(other_index) not in counted) and (str(other_index)+":"+str(var_index) not in counted)):

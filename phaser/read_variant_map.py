@@ -36,7 +36,7 @@ def do_read_variant_map(variant_table, baseq, o, splice, isize_cutoff):
 
 			# clear variant buffer
 			buffer_remove = [];
-			for variant_i in range(0, len(variant_buffer):
+			for variant_i in range(0, len(variant_buffer)):
 				if variant_buffer[variant_i].chr != read_chr):
 					# remove variants from buffer that are from previous chromosomes
 					if contigs.index(variant_buffer[variant_i].chr) < contigs.index(read_chr):
