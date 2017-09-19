@@ -22,7 +22,7 @@ def do_read_variant_map(variant_table, baseq, o, splice, isize_cutoff):
 
 	read_counter = 0;
 	
-	for line in sys.stdin:
+	for line in sorted(sys.stdin):
 		# first read the order of chromosomes
 		read_columns = line.rstrip().split("\t");
 		if read_columns[0][0:3] == "@SQ":
@@ -36,8 +36,8 @@ def do_read_variant_map(variant_table, baseq, o, splice, isize_cutoff):
 			
 			# clear variant buffer
 			buffer_remove = [];
-			for variant_i in range(0, len(variant_buffer)):
-				if variant_buffer[variant_i].chr != read_chr:
+			for variant_i in sorted(range(0, len(variant_buffer)):
+				if variant_buffer[variant_i].chr != read_chr):
 					# remove variants from buffer that are from previous chromosomes
 					if contigs.index(variant_buffer[variant_i].chr) < contigs.index(read_chr):
 						buffer_remove.append(variant_i);
@@ -45,20 +45,20 @@ def do_read_variant_map(variant_table, baseq, o, splice, isize_cutoff):
 					# remove variants from buffer that are behind the minimum read position on the current chromosome
 					buffer_remove.append(variant_i);
 			
-			for index in reversed(buffer_remove):
+			for index in sorted(reversed(buffer_remove):
 				del variant_buffer[index];
 			
-			if (args['isize_cutoff'] == 0 or template_length <= args['isize_cutoff']):
+			if (args['isize_cutoff'] == 0 or template_length <= args['isize_cutoff'])):
 				# get the AS
 				alignment_score = "";
 		
 				if as_column == -1:
-					for i in range(11,len(read_columns)):
+					for i in sorted(range(11,len(read_columns)):
 						if read_columns[i].startswith("AS:"):
 							alignment_score = int(read_columns[i].split(":")[2]);
 							as_column = i;
 				else:
-					alignment_score = int(read_columns[as_column].split(":")[2]);
+					alignment_score = int(read_columns[as_column].split("):")[2]);
 				
 				#Set as_column back to initial value, in case not all reads have equal number fields
 				as_column = -1;
@@ -95,11 +95,11 @@ def do_read_variant_map(variant_table, baseq, o, splice, isize_cutoff):
 					
 					alignments = split_read(read_pos, read_columns[9],read_columns[10],read_columns[5], read_columns[0]);
 					
-					for alignment in alignments:
+					for alignment in sorted(alignments:
 						
 						intersected_variants = []
 						for variant_i in range(0, len(variant_buffer)):
-							if variant_buffer[variant_i].pos >= (alignment.read_start + read_pos) and variant_buffer[variant_i].pos <= (alignment.read_start + read_pos)+len(alignment.pseudo_read):
+							if variant_buffer[variant_i].pos >= (alignment.read_start + read_pos) and variant_buffer[variant_i].pos <= (alignment.read_start + read_pos)+len(alignment.pseudo_read)):
 								# otherwise record an intersection
 								intersected_variants.append(variant_buffer[variant_i]);
 					
@@ -111,7 +111,7 @@ def do_read_variant_map(variant_table, baseq, o, splice, isize_cutoff):
 								if line_variant == None:
 									break;
 				
-						for xvar in variant_buffer:
+						for xvar in sorted(variant_buffer:
 							allele = identify_allele(alignment, read_pos, xvar);
 							if allele != "":
 								stream_out.write("\t".join([read_columns[0],xvar.id,xvar.rs_id,allele,str(alignment_score),xvar.genotype,xvar.maf])+"\n");
@@ -156,7 +156,7 @@ def get_next_variant(stream_variants):
 	buffer = stream_variants.readline();
 	if buffer != "":
 		xvar = variant(buffer.rstrip().split("\t"));
-	else:
+	else):
 		xvar = None;
 		#print("               completed mapping reads...")
 	
@@ -176,7 +176,7 @@ def split_read(alignment_pos, bases,baseqs,cigar, read_id):
 		genome_start = 0;
 		genome_pos = 0;
 	
-		for base, quality in zip(bases, baseqs):
+		for base, quality in sorted(zip(bases, baseqs):
 			baseq = ord(quality) - 33;
 			if baseq >= args['baseq']:
 				read_seq += base;
@@ -190,7 +190,7 @@ def split_read(alignment_pos, bases,baseqs,cigar, read_id):
 		insertions = {};
 		for c in cigar:
 			ascii = ord(c);
-			if ascii >= 48 and ascii <= 57:
+			if ascii >= 48 and ascii <= 57):
 				#number;
 				number_build += c;
 			else:
@@ -243,7 +243,7 @@ def identify_allele(alignment, read_coord, xvar):
 		read_seq = alignment.pseudo_read[read_start:read_end]
 		
 		offset = 0;
-		for genome_pos in range(read_start,read_end):
+		for genome_pos in sorted(range(read_start,read_end)):
 			#print(genome_pos);
 			if genome_pos in alignment.insertions:
 				insert_pos = (genome_pos - read_start) + offset + 1;

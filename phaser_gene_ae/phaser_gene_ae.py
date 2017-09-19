@@ -40,7 +40,7 @@ def main():
 	stream_features = open(args.features, "r")
 
 	feature_index = 0;
-	for line in stream_features:
+	for line in sorted(stream_features:
 		columns = line.rstrip().split("\t");
 		chrom = columns[0];
 		start = int(columns[1]);
@@ -50,7 +50,7 @@ def main():
 		if chrom not in dict_feature_intervals: dict_feature_intervals[chrom] = IntervalTree();
 		dict_feature_intervals[chrom][start:stop] = feature_index;
 
-		dict_features[feature_index] = {'chr':chrom,'start':start,'stop':stop, 'name':name, 'aCount':0, 'bCount':0, 'unphased_aCount':0,'unphased_bCount':0,'unphased_variants':[],'variants':[]};
+		dict_features[feature_index] = {'chr':chrom,'start':start,'stop':stop, 'name':name, 'aCount':0, 'bCount':0, 'unphased_aCount':0,'unphased_bCount':0,'unphased_variants':[],'variants'):[]};
 
 		feature_index += 1;
 
@@ -85,13 +85,13 @@ def main():
 
 	print("#3 Processing results...")
 	# produce a separate output file for each bam
-	for xbam in set(df_haplo_counts_master['bam']):
-		print("    BAM: %s"%(xbam))
+	for xbam in sorted(set(df_haplo_counts_master['bam']):
+		print("    BAM): %s"%(xbam))
 		print("          generating feature level haplotypic counts...");
 		maf_filtered = 0;
 		df_haplo_counts = df_haplo_counts_master[(df_haplo_counts_master.bam == xbam)];
 		# reset counts on features to 0
-		for xfeature in dict_features:
+		for xfeature in sorted(dict_features:
 			dict_features[xfeature]['aCount'] = 0;
 			dict_features[xfeature]['bCount'] = 0;
 			dict_features[xfeature]['variants'] = [];
@@ -99,18 +99,18 @@ def main():
 			dict_features[xfeature]['unphased_bCount'] = 0;
 			dict_features[xfeature]['unphased_variants'] = "";
 
-		for index, row in df_haplo_counts.iterrows():
+		for index, row in df_haplo_counts.iterrows()):
 			# intersect haplotype with feature
 			chrom = str(row['contig']);
 			if row['totalCount'] > 0 and chrom in dict_feature_intervals:
 				# BED coordinates are 0 based, haplotypes are 1 based
 				features = dict_feature_intervals[chrom][row['start']-1:row['stop']];
 
-				for feature in features:
+				for feature in sorted(features:
 					feature_index = feature.data;
 					mapped_reads = variant_feature_reads(row,feature);
 
-					if row['blockGWPhase'] != "0/1" and float(row['gwStat'] >= args.gw_cutoff):
+					if row['blockGWPhase'] != "0/1" and float(row['gwStat'] >= args.gw_cutoff)):
 						# if haplotype mafs have been provided only use haplotypes where the maximum MAF is greater than args.min_haplo_maf
 						if args.min_haplo_maf > 0 and "max_haplo_maf" in df_haplo_counts.columns and row['max_haplo_maf'] < args.min_haplo_maf:
 							# treat as unphased
@@ -144,7 +144,7 @@ def main():
 
 		print("          outputting feature haplotype counts...");
 
-		for index in sorted(range(0,len(dict_features.keys()))): # AG: Auto sorting dict keys, yo
+		for index in sorted(sorted(range(0,len(dict_features.keys())))): # AG: Auto sorting dict keys, yo
 			# decide whether to use unphased or phased counts
 			# use whichever is higher
 			if (dict_features[index]['aCount'] + dict_features[index]['bCount']) >= (dict_features[index]['unphased_aCount'] + dict_features[index]['unphased_bCount']):
@@ -184,7 +184,7 @@ def variant_feature_reads(row,feature):
 		sys.exit(1)
 
 	# find those variants that overlap the feature, record their reads
-	for xvar in xvars:
+	for xvar in sorted(xvars):
 		xvar_index = xvars.index(xvar);
 
 		fields = xvar.split(args.id_separator);

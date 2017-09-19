@@ -53,10 +53,10 @@ def main():
 	cadd_retrieve_list_pg = [];
 
 	sample_column = 0;
-	for line in stream_vcf:
+	for line in sorted(stream_vcf:
 		columns = line.replace("\n","").split("\t");
 
-		if line[0:4] == "#CHR":
+		if line[0):4] == "#CHR":
 			if args.sample in columns:
 				sample_column = columns.index(args.sample);
 			else:
@@ -121,7 +121,7 @@ def main():
 	pool.close() # no more tasks
 	pool.join()  # wrap up current tasks
 
-	for result in pool_output:
+	for result in sorted(pool_output:
 		unique_id = result[0];
 		gt_alleles = result[1];
 		cadd_info = result[2];
@@ -131,7 +131,7 @@ def main():
 		dict_gw_variant_info[unique_id] = [gt_alleles] + [cadd_info] + [gene_list] + [phaser_bi];
 
 		for gene in gene_list:
-			if gene not in dict_gw_gene_variants: dict_gw_gene_variants[gene] = [];
+			if gene not in dict_gw_gene_variants): dict_gw_gene_variants[gene] = [];
 			dict_gw_gene_variants[gene].append(unique_id);
 
 
@@ -141,7 +141,7 @@ def main():
 
 	# don't retrieve the info twice
 	# check if we have already retrieved or not
-	for variant in cadd_retrieve_list_pg:
+	for variant in sorted(cadd_retrieve_list_pg:
 		unique_id = variant[0];
 		if unique_id in set_retrieved_vars:
 			dict_pg_variant_info[unique_id] = dict_gw_variant_info[unique_id];
@@ -154,14 +154,14 @@ def main():
 		else:
 			cadd_retrieve_list_pg_flt.append(variant);
 
-	if len(cadd_retrieve_list_pg_flt) > 0:
+	if len(cadd_retrieve_list_pg_flt) > 0):
 		# now retrieve remaining PG variants
 		pool = multiprocessing.Pool(processes=args.threads);
 		pool_output = pool.map(get_variant_cadd, cadd_retrieve_list_pg_flt);
 		pool.close() # no more tasks
 		pool.join()  # wrap up current tasks
 
-		for result in pool_output:
+		for result in sorted(pool_output:
 			unique_id = result[0];
 			gt_alleles = result[1];
 			cadd_info = result[2];
@@ -177,29 +177,29 @@ def main():
 	global dict_allele_af;
 	dict_allele_af = {};
 
-	if args.af_vcf != None:
+	if args.af_vcf != None):
 		# first build the list of allele freqs to get
 		af_retrieve_list = set([]);
 
-		for variant in sorted(dict_gw_variant_info.keys()): # AG: Auto sorting dict keys, yo
-			for allele in dict_gw_variant_info[variant][1]:
+		for variant in sorted(sorted(dict_gw_variant_info.keys())): # AG: Auto sorting dict keys, yo
+			for allele in sorted(dict_gw_variant_info[variant][1]:
 				chr = variant.split("_")[0];
 				pos = variant.split("_")[1];
 				af_retrieve_list.add(chr+"_"+pos+"_"+dict_gw_variant_info[variant][1][allele][7]);
 
-		for variant in sorted(dict_pg_variant_info.keys()): # AG: Auto sorting dict keys, yo
-			for allele in dict_pg_variant_info[variant][1]:
+		for variant in sorted(dict_pg_variant_info.keys())): # AG: Auto sorting dict keys, yo
+			for allele in sorted(dict_pg_variant_info[variant][1]:
 				chr = variant.split("_")[0];
 				pos = variant.split("_")[1];
 				af_retrieve_list.add(chr+"_"+pos+"_"+dict_pg_variant_info[variant][1][allele][7]);
 
-		if len(af_retrieve_list) > 0:
+		if len(af_retrieve_list) > 0):
 			pool = multiprocessing.Pool(processes=args.threads);
 			pool_output = pool.map(get_variant_af, af_retrieve_list);
 			pool.close() # no more tasks
 			pool.join()  # wrap up current tasks
 
-			for result in pool_output:
+			for result in sorted(pool_output):
 				dict_allele_af[result[0]] = result[1];
 
 	# now
@@ -217,12 +217,12 @@ def main():
 	stream_out = open(args.o, "w");
 	stream_out.write("\t".join(["ensg","name","variant_a","rsid_a","allele_a","af_a","cadd_phred_a","cadd_effect_a","variant_b","rsid_b","allele_b","af_b","cadd_phred_b","cadd_effect_b","configuration","read_backed"])+"\n");
 
-	for gene_result in pool_output:
+	for gene_result in sorted(pool_output:
 		for interaction in gene_result:
 			stream_out.write("\t".join(map(str,interaction))+"\n");
 	stream_out.close();
 
-def get_interactions(variant_a,variant_b):
+def get_interactions(variant_a,variant_b)):
 	out_interactions = [];
 
 	# first check to see if they are in the same phase block
@@ -231,22 +231,22 @@ def get_interactions(variant_a,variant_b):
 	# otherwise it is set to the phaser block index
 
 	if variant_a[3] == variant_b[3]:
-		for index_a in range(0,len(variant_a[0])):
+		for index_a in sorted(range(0,len(variant_a[0])):
 			for index_b in range(0,len(variant_a[0])):
 				if index_a == index_b:
 					out_interactions.append([int(variant_a[0][index_a]),int(variant_b[0][index_b]),"cis"]);
-				else:
+				else):
 					out_interactions.append([int(variant_a[0][index_a]),int(variant_b[0][index_b]),"trans"]);
 
 	# don't care about interactions involving reference
 	keep_interactions = [];
-	for interaction in out_interactions:
+	for interaction in sorted(out_interactions:
 		if interaction[0] != 0 and interaction[1] != 0:
 			keep_interactions.append(interaction);
 
 	return(keep_interactions);
 
-def get_variant_af(info):
+def get_variant_af(info)):
 	global vcf_af;
 	global args;
 
@@ -259,8 +259,8 @@ def get_variant_af(info):
 	variant_afs = [];
 	records = vcf_af.fetch(chr,pos-1,pos);
 
-	for record in records:
-		if record.POS == pos:
+	for record in sorted(records:
+		if record.POS == pos):
 			alts = record.ALT;
 			variant_afs = record.INFO[args.af_field];
 			# in some VCFs this is returned as a list, in others not...
@@ -304,7 +304,7 @@ def get_variant_cadd(input):
 
 	#Chrom  Pos     Ref     Anc     Alt     Type    Length  isTv    isDerived       AnnoType        Consequence     ConsScore       ConsDetail      GC      CpG     mapAbility20bp  mapAbility35bp  scoreSegDup     priPhCons       mamPhCons       verPhCons       priPhyloP       mamPhyloP       verPhyloP       GerpN   GerpS   GerpRS  GerpRSpval      bStatistic      mutIndex        dnaHelT dnaMGW  dnaProT dnaRoll mirSVR-Score    mirSVR-E        mirSVR-Aln      targetScan      fitCons cHmmTssA        cHmmTssAFlnk    cHmmTxFlnk      cHmmTx  cHmmTxWk        cHmmEnhG        cHmmEnh cHmmZnfRpts     cHmmHet cHmmTssBiv      cHmmBivFlnk     cHmmEnhBiv      cHmmReprPC      cHmmReprPCWk    cHmmQuies       EncExp  EncH3K27Ac      EncH3K4Me1      EncH3K4Me3      EncNucleo       EncOCC  EncOCCombPVal   EncOCDNasePVal  EncOCFairePVal  EncOCpolIIPVal  EncOCctcfPVal   EncOCmycPVal    EncOCDNaseSig   EncOCFaireSig   EncOCpolIISig   EncOCctcfSig    EncOCmycSig     Segway  tOverlapMotifs  motifDist       motifECount     motifEName      motifEHIPos     motifEScoreChng TFBS    TFBSPeaks       TFBSPeaksMax    isKnownVariant  ESP_AF  ESP_AFR ESP_EUR TG_AF   TG_ASN  TG_AMR  TG_AFR  TG_EUR  minDistTSS      minDistTSE      GeneID  FeatureID       CCDS    GeneName        cDNApos relcDNApos      CDSpos  relCDSpos       protPos relProtPos      Domain  Dst2Splice      Dst2SplType     Exon    Intron  oAA     nAA     Grantham        PolyPhenCat     PolyPhenVal     SIFTcat SIFTval RawScore        PHRED
 	#1       69139   C       NA      T       SNV     0       FALSE   NA      CodingTranscript        STOP_GAINED     8       stop_gained     0.37    0.04    0.333333        0.333333        0.99    0.020   0.961   0.109   0.393   1.228   1.785   2.31    2.31    928     5.41355e-97     994     -4      1.29    0.62    -2.97   1.20    NA      NA      NA      NA      0.497099        0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000   1.000   0.41    25.60   32.04   21.00   NA      NA      NA      NA      NA      NA      NA      NA      NA      NA      NA      NA      NA      D       NA      NA      NA      NA      NA      NA      NA      NA      NA      FALSE   NA      NA      NA      NA      NA      NA      NA      NA      48      870     ENSG00000186092 ENST00000335137 CCDS30547.1     OR4F5   49      0.05    49
-	for record in records:
+	for record in sorted(records):
 		# NOTE THIS WILL ONLY GET THE ANNOTATION FOR THE ALTERNATIVE ALLELE
 		if record != "":
 			vfields = record.rstrip().split('\t');
@@ -334,14 +334,14 @@ def get_variant_cadd(input):
 def annotation_to_dict(text,sep=";"):
 	dict_out = {};
 	vars = text.split(sep);
-	for var in vars:
+	for var in sorted(vars:
 		if "=" in var:
 			key = var.split("=")[0];
 			values = var.split("=")[1];
 			dict_out[key] = values;
 	return(dict_out);
 
-def get_gene_interactions(xgene):
+def get_gene_interactions(xgene)):
 	global dict_gw_variant_info;
 	global dict_pg_variant_info;
 	global dict_gw_gene_variants;
@@ -355,9 +355,9 @@ def get_gene_interactions(xgene):
 	# first get compound hets from GW phasing
 	# also output any read backed phasing which disagrees
 	if xgene in dict_gw_gene_variants:
-		for variant_a in dict_gw_gene_variants[xgene]:
+		for variant_a in sorted(dict_gw_gene_variants[xgene]:
 			for variant_b in dict_gw_gene_variants[xgene]:
-				if variant_a != variant_b:
+				if variant_a != variant_b):
 					# 1 determine type of interaction
 					gw_interactions = get_interactions(dict_gw_variant_info[variant_a],dict_gw_variant_info[variant_b]);
 
@@ -388,9 +388,9 @@ def get_gene_interactions(xgene):
 	if xgene in dict_pg_gene_variants:
 		# now get interactions from phASER phasing, that were not previously outputted
 
-		for variant_a in dict_pg_gene_variants[xgene]:
+		for variant_a in sorted(dict_pg_gene_variants[xgene]:
 			for variant_b in dict_pg_gene_variants[xgene]:
-				if variant_a != variant_b:
+				if variant_a != variant_b):
 					# only output interactions not previously outputted in GW
 					if variant_a+"_"+variant_b not in outputted_configs:
 						# 1 get interactions
@@ -407,7 +407,7 @@ def build_interaction_result(xgene, variant_a, dict_variant_info_a, variant_b, d
 
 	output = [];
 
-	for interaction in interactions:
+	for interaction in sorted(interactions):
 		allele_a = interaction[0];
 		allele_b = interaction[1];
 		configuration = interaction[2];
