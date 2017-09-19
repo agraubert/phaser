@@ -144,7 +144,7 @@ def main():
 
 		print("          outputting feature haplotype counts...");
 
-		for index in sorted(sorted(range(0,len(dict_features.keys())))): # AG: Auto sorting dict keys, yo
+		for index in sorted(range(0,len(dict_features.keys()))): # AG: Auto sorting dict keys, yo
 			# decide whether to use unphased or phased counts
 			# use whichever is higher
 			if (dict_features[index]['aCount'] + dict_features[index]['bCount']) >= (dict_features[index]['unphased_aCount'] + dict_features[index]['unphased_bCount']):

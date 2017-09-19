@@ -231,7 +231,7 @@ def get_interactions(variant_a,variant_b)):
 	# otherwise it is set to the phaser block index
 
 	if variant_a[3] == variant_b[3]:
-		for index_a in sorted(range(0,len(variant_a[0])):
+		for index_a in range(0,len(variant_a[0]):
 			for index_b in range(0,len(variant_a[0])):
 				if index_a == index_b:
 					out_interactions.append([int(variant_a[0][index_a]),int(variant_b[0][index_b]),"cis"]);
