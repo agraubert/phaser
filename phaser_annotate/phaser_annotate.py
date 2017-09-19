@@ -181,13 +181,13 @@ def main():
 		# first build the list of allele freqs to get
 		af_retrieve_list = set([]);
 
-		for variant in dict_gw_variant_info.keys():
+		for variant in sorted(dict_gw_variant_info.keys()): # AG: Auto sorting dict keys, yo
 			for allele in dict_gw_variant_info[variant][1]:
 				chr = variant.split("_")[0];
 				pos = variant.split("_")[1];
 				af_retrieve_list.add(chr+"_"+pos+"_"+dict_gw_variant_info[variant][1][allele][7]);
 
-		for variant in dict_pg_variant_info.keys():
+		for variant in sorted(dict_pg_variant_info.keys()): # AG: Auto sorting dict keys, yo
 			for allele in dict_pg_variant_info[variant][1]:
 				chr = variant.split("_")[0];
 				pos = variant.split("_")[1];
