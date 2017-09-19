@@ -821,7 +821,7 @@ def main():
 		haplotype_max_maf_lookup[list_to_string(variants)] = max(haplotype_mafs);
 
 		# update the variants with their corrected phases
-		for var_index in sorted(range(0,len(variants))):
+		for var_index in range(0,len(variants)):
 			variant = variants[var_index];
 			allele_index = dict_variant_reads[variant]['alleles'].index(alleles[0][var_index])
 			dict_variant_reads[variant]['gw_phase'][allele_index] = corrected_phases[0][var_index];
@@ -837,7 +837,7 @@ def main():
 		#$ write ASE stats
 
 		# generate haplotypic counts
-		for bam_i in sorted(range(0,len(bam_list)):
+		for bam_i in range(0,len(bam_list):
 			if bam_i not in haplo_count_bam_exclude:
 				bam_name = bam_names[bam_i]
 				set_hap_expr_reads = [[],[]];
@@ -973,7 +973,7 @@ def main():
 			# check to see if variant is blacklisted
 			if chrom+"_"+str(pos) not in set_haplo_blacklist:
 
-				for bam_i in sorted(range(0,len(bam_list)):
+				for bam_i in range(0,len(bam_list):
 					if bam_i not in haplo_count_bam_exclude:
 						bam_name = bam_names[bam_i];
 						if bam_i in dict_var['haplo_reads'][0]:
@@ -1203,7 +1203,7 @@ def generate_variant_dict(fields)):
 	# get only the alleles this individual has
 	ind_alleles = [];
 
-	for i in sorted(range(0,len(all_alleles)):
+	for i in range(0,len(all_alleles):
 		if str(i) in genotype):
 			ind_alleles.append(all_alleles[i]);
 
@@ -1227,7 +1227,7 @@ def generate_variant_dict(fields)):
 	else:
 		rsid = fields[1];
 
-	return({"id":fields[1], "rsid":rsid,"ref":all_alleles[0],"chr":id_split[0],"pos":int(id_split[1]),"alleles":ind_alleles,"phase":phase, "gw_phase":phase, "maf":maf, "other_reads":[], "reads":[[] for i in sorted(range(len(ind_alleles)))], "haplo_reads":[{} for i in sorted(range(len(ind_alleles))]});
+	return({"id":fields[1], "rsid":rsid,"ref":all_alleles[0],"chr":id_split[0],"pos":int(id_split[1]),"alleles":ind_alleles,"phase":phase, "gw_phase":phase, "maf":maf, "other_reads":[], "reads":[[] for i in range(len(ind_alleles))], "haplo_reads":[{} for i in range(len(ind_alleles)]});
 
 def phase_block_container(input)):
 	#stream_out = open(input[0],"w");
@@ -1501,14 +1501,14 @@ def write_vcf():
 					all_alleles = [vcf_columns[3]] + alt_alleles;
 					ind_alleles = [];
 
-					for i in sorted(range(0,len(all_alleles)):
+					for i in range(0,len(all_alleles):
 						if str(i) in genotype):
 							ind_alleles.append(all_alleles[i]);
 
 					# make sure there are as many entries in each sample as there should be before adding new columns
 					# if there are entries missing add blanks
 					n_fields = len(vcf_columns[8].split(":"));
-					for i in sorted(range(9, len(vcf_columns)):
+					for i in range(9, len(vcf_columns):
 						sample_fields = len(vcf_columns[i].split(":"));
 						if sample_fields != n_fields:
 							missing_cols = n_fields - sample_fields;
@@ -1674,7 +1674,7 @@ def count_hap_reads(input):
 	reads = [];
 	counted = set([]);
 	# sum up supporting reads between all configs
-	for var_index in sorted(range(0,len(block)):
+	for var_index in range(0,len(block):
 		for other_index in range(0, len(block)):
 			if other_index != var_index:
 				if (str(var_index)+":"+str(other_index) not in counted) and (str(other_index)+":"+str(var_index) not in counted)):
@@ -1694,7 +1694,7 @@ def generate_hap_network_all(input):
 
 	out_junctions = [];
 
-	for var_index in sorted(range(0,len(block)):
+	for var_index in range(0,len(block):
 		for other_index in range(0, len(block)):
 			if other_index != var_index:
 				for allele_index in range (0,2):
@@ -1719,7 +1719,7 @@ def generate_hap_network(input)):
 	out_junctions = [];
 
 	# sum up supporting reads between all configs
-	for var_index in sorted(range(0,len(block)):
+	for var_index in range(0,len(block):
 		for other_index in range(0, len(block)):
 			if other_index != var_index:
 				if (str(var_index)+":"+str(other_index) not in counted) and (str(other_index)+":"+str(var_index) not in counted)):
@@ -1814,7 +1814,7 @@ def pool_split(threads, data)):
 	if pool_size > 0:
 		pool_inputs = data_length / pool_size;
 
-		for i in sorted(range(0,pool_inputs)):
+		for i in range(0,pool_inputs):
 			#last pool gets the remaining reads
 			if i == (pool_inputs-1):
 				pool_input.append(data[(i*pool_size):]);
@@ -1898,7 +1898,7 @@ def phase_v3(input)):
 		final_phase = sub_block_phases[0];
 		split_start = 0;
 
-		for i in sorted(range(1, len(sub_block_phases))):
+		for i in range(1, len(sub_block_phases)):
 			step_phases = [final_phase,sub_block_phases[i]];
 			used_vars = sum([sum([len(y) for y in x]) for x in step_phases]) / 2;
 			#print(used_vars);
